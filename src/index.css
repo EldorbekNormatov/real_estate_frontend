@@ -1,0 +1,24 @@
+@import 'tailwindcss';
+
+/* Custom additions used with @apply elsewhere if needed */
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100svh;
+  }
+
+  #root {
+    min-height: 100svh;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    border: none;
+    text-align: initial;
+    display: block;
+  }
+}
