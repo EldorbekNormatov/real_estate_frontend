@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import GoogleSheetsSection from '../components/GoogleSheetsSection.jsx'
 import UsersSettingsSection from '../components/UsersSettingsSection.jsx'
 import {
   connectBot,
@@ -16,6 +17,16 @@ export default function SettingsPage() {
   const [pending, setPending] = useState(false)
   const [err, setErr] = useState('')
   const [success, setSuccess] = useState('')
+
+  function handleSheetMessage({ type, text }) {
+    if (type === 'error') {
+      setSuccess('')
+      setErr(text)
+    } else {
+      setErr('')
+      setSuccess(text)
+    }
+  }
 
   const loadBot = useCallback(async () => {
     const data = await fetchBotSettings()
@@ -97,6 +108,8 @@ export default function SettingsPage() {
       ) : null}
 
       <div className="space-y-8">
+        <UsersSettingsSection />
+
         {botLoading ? (
           <div className="max-w-xl rounded-2xl border border-slate-200 bg-white px-6 py-12 text-center text-slate-500">
             Yuklanmoqda…
@@ -188,7 +201,7 @@ export default function SettingsPage() {
           </section>
         )}
 
-        <UsersSettingsSection />
+        <GoogleSheetsSection onMessage={handleSheetMessage} />
       </div>
     </div>
   )

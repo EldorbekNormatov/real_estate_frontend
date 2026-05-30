@@ -127,3 +127,48 @@ export async function updateCrmUser(id, body) {
 export async function fetchCrmStats(period = 'all') {
   return crmFetch(`/api/crm/stats?period=${encodeURIComponent(period)}`)
 }
+
+export async function fetchSheetSettings() {
+  return crmFetch('/api/crm/settings/sheets')
+}
+
+export async function saveSheetSettings(body) {
+  return crmFetch('/api/crm/settings/sheets', {
+    method: 'POST',
+    body: JSON.stringify(body),
+  })
+}
+
+export async function importFromGoogleSheet(spreadsheetUrl) {
+  return crmFetch('/api/crm/settings/sheets/import', {
+    method: 'POST',
+    body: JSON.stringify({ spreadsheetUrl }),
+  })
+}
+
+export async function exportLeadsCsv() {
+  return crmFetch('/api/crm/settings/sheets/export-csv')
+}
+
+export async function exportToGoogleSheet() {
+  return crmFetch('/api/crm/settings/sheets/export', { method: 'POST' })
+}
+
+export async function saveGoogleOAuthApp(body) {
+  return crmFetch('/api/crm/settings/sheets/oauth-app', {
+    method: 'POST',
+    body: JSON.stringify(body),
+  })
+}
+
+export async function getGoogleConnectUrl() {
+  return crmFetch('/api/crm/settings/sheets/google/auth-url')
+}
+
+export async function disconnectGoogleAccount() {
+  return crmFetch('/api/crm/settings/sheets/google', { method: 'DELETE' })
+}
+
+export async function removeGoogleSheet() {
+  return crmFetch('/api/crm/settings/sheets', { method: 'DELETE' })
+}

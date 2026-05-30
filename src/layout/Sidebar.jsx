@@ -14,7 +14,7 @@ export default function Sidebar() {
   const { user, logout } = useAuth()
 
   return (
-    <aside className="flex h-svh w-[260px] shrink-0 flex-col border-r border-white/[0.06] bg-[#15192b] text-slate-200">
+    <aside className="flex h-full w-[260px] shrink-0 flex-col overflow-y-auto border-r border-white/[0.06] bg-[#15192b] text-slate-200">
       <div className="px-5 py-6">
         <Link
           to="/leadlar"
