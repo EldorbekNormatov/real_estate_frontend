@@ -15,7 +15,14 @@ export function setToken(token) {
  */
 export async function crmFetch(path, options = {}) {
   const headers = new Headers(options.headers)
-  if (!headers.has('Content-Type') && options.body && typeof options.body === 'string') {
+  const isFormData =
+    typeof FormData !== 'undefined' && options.body instanceof FormData
+  if (
+    !isFormData &&
+    !headers.has('Content-Type') &&
+    options.body &&
+    typeof options.body === 'string'
+  ) {
     headers.set('Content-Type', 'application/json')
   }
   const token = getToken()
@@ -81,9 +88,10 @@ export async function patchLead(id, body) {
 }
 
 export async function createLead(body) {
+  const isFormData = typeof FormData !== 'undefined' && body instanceof FormData
   return crmFetch('/api/crm/leads', {
     method: 'POST',
-    body: JSON.stringify(body),
+    body: isFormData ? body : JSON.stringify(body),
   })
 }
 
