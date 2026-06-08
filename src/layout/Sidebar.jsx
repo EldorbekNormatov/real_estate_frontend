@@ -1,4 +1,6 @@
+import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
+import ProfileModal from '../components/ProfileModal.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
 import { ROLE_LABELS, canManageUsers } from '../constants/roles.js'
 
@@ -12,6 +14,25 @@ const linkCls = ({ isActive }) =>
 
 export default function Sidebar() {
   const { user, logout } = useAuth()
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [profileOpen, setProfileOpen] = useState(false)
+  const menuRef = useRef(null)
+
+  useEffect(() => {
+    if (!menuOpen) return
+    function onClickOutside(e) {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', onClickOutside)
+    return () => document.removeEventListener('mousedown', onClickOutside)
+  }, [menuOpen])
+
+  function openProfile() {
+    setMenuOpen(false)
+    setProfileOpen(true)
+  }
 
   return (
     <aside className="flex h-full w-[260px] shrink-0 flex-col overflow-y-auto border-r border-white/[0.06] bg-[#15192b] text-slate-200">
@@ -61,9 +82,20 @@ export default function Sidebar() {
         )}
       </nav>
 
-      <div className="border-t border-white/[0.06] p-4">
-        <div className="mb-3 flex items-center gap-3 rounded-xl bg-white/[0.04] px-3 py-2.5">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[#1e9e8a] to-[#0f766e] text-sm font-bold text-white">
+      <div className="relative border-t border-white/[0.06] p-4" ref={menuRef}>
+        <button
+          type="button"
+          onClick={() => setMenuOpen((o) => !o)}
+          className={[
+            'flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors',
+            menuOpen
+              ? 'bg-white/10 ring-1 ring-white/10'
+              : 'bg-white/[0.04] hover:bg-white/[0.08]',
+          ].join(' ')}
+          aria-expanded={menuOpen}
+          aria-haspopup="menu"
+        >
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#1e9e8a] to-[#0f766e] text-sm font-bold text-white">
             {(user?.username || '?').slice(0, 1).toUpperCase()}
           </div>
           <div className="min-w-0 flex-1">
@@ -74,15 +106,44 @@ export default function Sidebar() {
               {ROLE_LABELS[user?.role] || user?.role || '—'}
             </p>
           </div>
-        </div>
+          <span
+            className={[
+              'text-xs text-slate-500 transition-transform',
+              menuOpen ? 'rotate-180' : '',
+            ].join(' ')}
+            aria-hidden
+          >
+            ▾
+          </span>
+        </button>
+
+        {menuOpen ? (
+          <div
+            role="menu"
+            className="absolute bottom-full left-4 right-4 mb-2 overflow-hidden rounded-xl border border-white/10 bg-[#1c2137] py-1 shadow-xl shadow-black/40"
+          >
+            <button
+              type="button"
+              role="menuitem"
+              onClick={openProfile}
+              className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm text-slate-200 transition-colors hover:bg-white/10"
+            >
+              <span className="text-base opacity-80">👤</span>
+              Profil sozlamalari
+            </button>
+          </div>
+        ) : null}
+
         <button
           type="button"
           onClick={() => logout()}
-          className="w-full rounded-xl border border-white/10 px-3 py-2 text-sm text-slate-300 transition-colors hover:bg-white/5 hover:text-white"
+          className="mt-3 w-full rounded-xl border border-white/10 px-3 py-2 text-sm text-slate-300 transition-colors hover:bg-white/5 hover:text-white"
         >
           Chiqish
         </button>
       </div>
+
+      <ProfileModal open={profileOpen} onClose={() => setProfileOpen(false)} />
     </aside>
   )
 }

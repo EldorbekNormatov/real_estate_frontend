@@ -62,6 +62,13 @@ export async function meRequest() {
   return crmFetch('/api/crm/me')
 }
 
+export async function updateProfile(body) {
+  return crmFetch('/api/crm/me', {
+    method: 'PATCH',
+    body: JSON.stringify(body),
+  })
+}
+
 export async function fetchLeadsKanban(params = {}) {
   const q = new URLSearchParams()
   if (params.search?.trim()) q.set('search', params.search.trim())

@@ -158,7 +158,7 @@ export default function SignInPage() {
                   autoComplete="username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  placeholder="Masalan: admin"
+                  placeholder=""
                   className="w-full rounded-xl border border-white/[0.1] bg-[#0f1628] px-4 py-3.5 text-[0.95rem] text-white outline-none ring-[#c9a227]/0 transition-[border-color,box-shadow] placeholder:text-slate-500 focus:border-[#c9a227]/55 focus:ring-[3px] focus:ring-[#c9a227]/18"
                   required
                 />

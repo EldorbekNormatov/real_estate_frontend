@@ -195,7 +195,7 @@ export default function LeadsPage() {
     if (!id) return
 
     if (column.type === 'pool') {
-      handlePatchLead(id, { assignedTo: null, status: 'new' })
+      handlePatchLead(id, { assignedTo: null })
       return
     }
 
@@ -215,7 +215,7 @@ export default function LeadsPage() {
             Leadlar
           </h1>
           <p className="mt-1 text-sm text-slate-500">
-            Kanban: Yangi (biriktirilmagan) va operator ustunlari · Ro‘yxatda filtr
+            Kanban: biriktirilmagan → Yangi · biriktirilgan → operator ustuni
           </p>
         </div>
 
@@ -370,7 +370,7 @@ export default function LeadsPage() {
               </div>
               {col.type === 'pool' ? (
                 <p className="mb-2 px-1 text-[0.7rem] text-slate-500">
-                  Yangi va operatorga biriktirilmagan
+                  Operatorga biriktirilmagan barcha leadlar
                 </p>
               ) : null}
               <div className="flex min-h-[120px] flex-col gap-2.5">
@@ -380,7 +380,7 @@ export default function LeadsPage() {
                       key={lead._id}
                       lead={lead}
                       busy={busyId === lead._id}
-                      showStatus={col.type === 'operator'}
+                      showStatus
                     />
                   ))
                 ) : (
