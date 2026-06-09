@@ -151,6 +151,21 @@ export default function SettingsPage() {
                 <p className="mt-1 font-mono text-xs text-emerald-700/80">
                   Token: {bot.tokenMask}
                 </p>
+                <p className="mt-2 text-xs text-emerald-800/90">
+                  {bot.groupChatConfigured ? (
+                    <>
+                      Lead guruhi:{' '}
+                      <span className="font-medium">
+                        {bot.groupChatTitle || 'Ulangan guruh'}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      Lead guruhi ulanmagan — botni guruhga qo‘shib{' '}
+                      <span className="font-mono">/addgroupchat</span> yuboring
+                    </>
+                  )}
+                </p>
               </div>
             ) : (
               <div className="mb-6 rounded-xl border border-dashed border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600">
